@@ -27,8 +27,23 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
+    /**
+     * Return completed modules
+     *
+     */
     public function completed_modules()
     {
         return $this->belongsToMany('App\Module', 'user_completed_modules');
+    }
+
+    
+    /**
+     * Return completed modules in the order which it is to be completed
+     *
+     */
+    public function completed_modules_by_order($order)
+    {
+        return $this->belongsToMany('App\Module', 'user_completed_modules')->orderByRaw('FIELD(modules.name,"'.$order.'")')->groupBy(['modules.course_key', 'modules.name']);
     }
 }
