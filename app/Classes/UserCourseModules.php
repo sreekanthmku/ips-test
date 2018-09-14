@@ -68,7 +68,7 @@ class UserCourseModules
         // get completed courses from database in order
         $completed_modules_in_order = $user->completed_modules_by_order($order_string)
             ->pluck('name')->toArray();
-            
+
         return $completed_modules_in_order;         
     }
 
@@ -103,9 +103,8 @@ class UserCourseModules
 *
 * @return array
 */
-    public function getModulesAsArray(){
+    public function getModulesAsArray($marked_array){
         
-        $marked_array = $this->markCompletedModules();
         $no_of_courses = $this->getNumberOfCourses();
 
         // Create multidimentional array. can use array_chunk since modules are grouped by courses
@@ -132,16 +131,29 @@ class UserCourseModules
 *
 * @return bool
 */
-    public function isCompleted($multi_array){
-        foreach ($multi_array as $array) {
-           $value = reset($array);
+    public function isCompleted($mod_array){
+
+        $final_modules = array();
+        $i = 0;
+
+        // get array of module 7 of each course
+        foreach($mod_array as $module) {
+            
+            if ($i % 7 === 0) {
+                $final_modules[] = $module;
+            }
+            
+            $i++;
         }
-        if($value == 'completed') {
+
+        // check if all course module 7 is completed
+        if (count(array_unique($final_modules)) === 1 && end($final_modules) === 'completed') {
             return true;
         }
         else{
             return false;
         }
+
     }
 
 
@@ -153,10 +165,11 @@ class UserCourseModules
 */ 
     public function getNextModule(){
         
+        $marked_array = $this->markCompletedModules();
+        
         // check whether completed 
-        $modules_as_array = $this->getModulesAsArray();
-
-        if ($this->isCompleted($modules_as_array) == true) {
+        $modules_as_array = $this->getModulesAsArray($marked_array);
+        if ($this->isCompleted($marked_array) == true) {
             $next_module = 'completed';
         }
         // Not complete. findout module 
@@ -204,11 +217,11 @@ class UserCourseModules
     public function getTagId(){
         
         $next_module = $this->getNextModule();
-        $tag_id = DB::table('tags')
+        $tag = DB::table('tags')
                 ->where('name', 'like', '%' . $next_module . '%')
                 ->first();
         
-        return $tag_id->id;
+        return $tag->name;
     }
 
 }
