@@ -36,7 +36,7 @@ class UserCourseModules
 *
 * @return array
 */
-    public function getModulesOrder(){
+    protected function getModulesOrder(){
         
         $order = [];
         foreach ($this->courses as $course) {
@@ -56,7 +56,7 @@ class UserCourseModules
 *
 * @return array
 */
-    public function getCompletedModulesInOrder(){
+    protected function getCompletedModulesInOrder(){
         
         $user = User::whereEmail($this->email)->first();
         if(empty($user)){
@@ -79,7 +79,7 @@ class UserCourseModules
 *
 * @return array
 */
-    public function markCompletedModules(){
+    protected function markCompletedModules(){
         
         $order = $this->order;
         $completed_modules_in_order = $this->getCompletedModulesInOrder();
@@ -103,7 +103,7 @@ class UserCourseModules
 *
 * @return array
 */
-    public function getModulesAsArray($marked_array){
+    protected function getModulesAsArray($marked_array){
         
         $no_of_courses = $this->getNumberOfCourses();
 
@@ -120,7 +120,7 @@ class UserCourseModules
 *
 * @return string
 */
-    public function getNumberOfCourses(){
+    protected function getNumberOfCourses(){
         return count($this->courses);
     }
 
@@ -131,7 +131,7 @@ class UserCourseModules
 *
 * @return bool
 */
-    public function isCompleted($mod_array){
+    protected function isCompleted($mod_array){
 
         $final_modules = array();
         $i = 0;
@@ -163,7 +163,7 @@ class UserCourseModules
 *
 * @return string
 */ 
-    public function getNextModule(){
+    protected function getNextModule(){
         
         $marked_array = $this->markCompletedModules();
         
