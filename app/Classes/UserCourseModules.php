@@ -203,8 +203,7 @@ class UserCourseModules
             }
         }
         
-        return $next_module;
-         
+        return $next_module;       
     }
 
 
