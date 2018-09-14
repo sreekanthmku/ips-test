@@ -48,18 +48,17 @@ class ApiController extends Controller
             if (isset($email) && !empty($email)) {
                 $user = $infusionsoft->getContact($email);
                 $courses = explode(',', $user["_Products"]);
-
+                
                 if (!empty($courses)) {
 
                     $usercoursemodules = new UserCourseModules($courses,$email);
                     $tag =  $usercoursemodules->getTagId();
-                    // $save_tag = $infusionsoft->addTag($user['Id'],$tag);
+                    $save_tag = $infusionsoft->addTag($user['Id'],$tag);
                     
-                    // return response()->json([[
-                    //     'success' => true,
-                    //     'message' => 'Tag added successfully'
-                    // ]]);
-                    return $tag;
+                    return response()->json([[
+                        'success' => true,
+                        'message' => 'Tag added successfully'
+                    ]]);
 
                 }
                 // no courses found

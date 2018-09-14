@@ -221,7 +221,7 @@ class UserCourseModules
                 ->where('name', 'like', '%' . $next_module . '%')
                 ->first();
         
-        return $tag->name;
+        return $tag->id;
     }
 
 }
