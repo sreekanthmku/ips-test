@@ -59,17 +59,17 @@ class UserCourseModules
     protected function getCompletedModulesInOrder(){
         
         $user = User::whereEmail($this->email)->first();
-        if(empty($user)){
+        
+        if(!empty($user)){
 
-            throw new Exception('no user found');
+            $order_string = implode ("\",\"", $this->order);
+            // get completed courses from database in order
+            $completed_modules_in_order = $user->completed_modules_by_order($order_string)
+                ->pluck('name')->toArray();
+
+            return $completed_modules_in_order;      
         }
-
-        $order_string = implode ("\",\"", $this->order);
-        // get completed courses from database in order
-        $completed_modules_in_order = $user->completed_modules_by_order($order_string)
-            ->pluck('name')->toArray();
-
-        return $completed_modules_in_order;         
+           
     }
 
 
