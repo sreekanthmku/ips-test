@@ -163,7 +163,7 @@ class UserCourseModules
 *
 * @return string
 */ 
-    protected function getNextModule(){
+    public function getNextModule(){
         
         $marked_array = $this->markCompletedModules();
         
